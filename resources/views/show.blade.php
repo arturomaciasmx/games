@@ -49,7 +49,7 @@
             <p class="mt-8">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, nemo. Voluptas similique molestiae odit aut accusantium! Eveniet porro numquam quae voluptatibus incidunt impedit id soluta praesentium harum, illum dolorum earum?</p>
 
             <button class="mt-12 flex bg-blue-500 font-semibold p-4 rounded hover:bg-blue-600 transition ease-in duration-150">Play Trailer</button>
-
+            
         </div>
     </div> <!-- End game-details -->
 
