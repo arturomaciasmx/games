@@ -1,12 +1,12 @@
 <div wire:init="loadMoreAnticipated" class="most-anticipated-container space-y-8 mt-8">
-    @forelse ($mostAnticipated as $game)     
+    @forelse ($mostAnticipated as $game)
         <div class="game flex">
             <a href="#">
-                <img src="{{ $game['cover']['url'] }}" alt="" class="w-16 hover:opacity-75 transition ease-in-out duration-150">
+                <img src="{{ $game['cover_url'] }}" alt="" class="w-16 hover:opacity-75 transition ease-in-out duration-150">
             </a>
             <div class="ml-4">
                 <a href="#" class="hover:text-gray-300">{{ $game['name'] }}</a>
-                <p class="text-gray-400 text-sm mt-1">{{ Carbon\Carbon::parse($game['first_release_date'])->format('M d, Y') }}</p>
+                <p class="text-gray-400 text-sm mt-1">{{ $game['first_release_date'] }}</p>
             </div>
         </div>
         @empty
