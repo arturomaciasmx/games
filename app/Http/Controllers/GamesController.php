@@ -83,11 +83,11 @@ class GamesController extends Controller
             'involved_companies' => $game['involved_companies'][0]['company']['name'],
             'platforms' => collect($game['platforms'])->pluck('abbreviation')->filter()->implode(', '),
             'rating' => array_key_exists('rating', $game)
-                ? round($game['rating']).'%'
-                : '0%',
+                ? round($game['rating'])
+                : '0',
             'aggregated_rating' => array_key_exists('aggregated_rating', $game)
-                ? round($game['aggregated_rating']).'%'
-                : '0%',
+                ? round($game['aggregated_rating'])
+                : '0',
             'screenshots' => collect($game['screenshots'])->map(function($screenshot){
                 return collect($screenshot)->merge([
                     'screenshot_huge' => Str::replaceFirst('thumb', 'screenshot_huge', $screenshot['url']),
@@ -98,8 +98,8 @@ class GamesController extends Controller
                 return collect($game)->merge([
                     'cover_big' => Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']),
                     'rating' => array_key_exists('rating', $game)
-                        ? round($game['rating']).'%'
-                        : '0%',
+                        ? round($game['rating'])
+                        : '0',
                     'platforms' => collect($game['platforms'])->pluck('abbreviation')->filter()->implode(', '),
                 ]);
             })->take(6)

@@ -40,9 +40,11 @@
     <footer class="border-t border-gray-800">
         <div class="container mx-auto">
             Powered by <b>Arturo Macias</b>
-        </div>  
+        </div>
     </footer>
 
     <livewire:scripts />
+    <script src="{{ asset('js/app.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>

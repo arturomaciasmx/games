@@ -21,18 +21,28 @@
 
             <div class="flex flex-wrap items-center mt-8">
                 <div class="flex items-center mr-12">
-                    <div class="w-16 h-16 bg-gray-800 rounded-full">
-                        <div class="text-xs font-semibold flex justify-center items-center h-full">
-                            {{ $game['rating'] }}
-                        </div>
+                    <div id="member-rating" class="w-16 h-16 text-sm bg-gray-800 rounded-full relative">
+                        {{-- {{ $game['rating'] }} --}}
+                        @push('scripts')
+                            @include('partials._rating', [
+                                'slug' => 'member-rating',
+                                'rating' => $game['rating'],
+                                'event' => null
+                            ])
+                        @endpush
                     </div>
                     <div class="ml-4 text-xs">Member<br>Score</div>
                 </div>
                 <div class="flex items-center mr-12">
-                    <div class="w-16 h-16 bg-gray-800 rounded-full">
-                        <div class="text-xs font-semibold flex justify-center items-center h-full">
-                            {{ $game['aggregated_rating'] }}
-                        </div>
+                    <div id="aggregated_rating" class="w-16 h-16 text-sm bg-gray-800 rounded-full relative">
+                        {{-- {{ $game['aggregated_rating'] }} --}}
+                        @push('scripts')
+                            @include('partials._rating', [
+                                'slug' => 'aggregated_rating',
+                                'rating' => $game['aggregated_rating'],
+                                'event' => null
+                            ])
+                        @endpush
                     </div>
                     <div class="ml-4 text-xs">Critic<br>Score</div>
                 </div>
