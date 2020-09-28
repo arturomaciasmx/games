@@ -10,9 +10,9 @@ use Illuminate\Support\Str;
 class PopularGames extends Component
 {
     public $popularGames = [];
-    
 
-    public function loadPopularGames() 
+
+    public function loadPopularGames()
     {
         // Ver cache
         $before = Carbon::now()->subMonths(2)->timestamp;
@@ -22,13 +22,13 @@ class PopularGames extends Component
             'body' => "
             fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating, slug;
             where release_dates.platform = (48,49,6,130)
-            & (first_release_date > {$before} 
+            & (first_release_date > {$before}
             & first_release_date < {$after});
             sort popularity desc;
             limit 12;
             "
         ])->get('https://api-v3.igdb.com/games/')->json();
-            
+
         // dd($this->formatGamesForView($gamesOriginal));
         $this->popularGames = $this->formatGamesForView($gamesOriginal);
     }
@@ -42,7 +42,7 @@ class PopularGames extends Component
     {
         return collect($games)->map(function($game) {
             return collect($game)->merge([
-                'coverUrl' => Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']),
+                'cover_big' => Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']),
                 'rating' => isset($game['rating']) ? round($game['rating']) . '%' : null,
                 'platforms' => collect($game['platforms'])->pluck('abbreviation')->filter()->implode(', '),
             ]);
