@@ -29,8 +29,19 @@ class PopularGames extends Component
             "
         ])->get('https://api-v3.igdb.com/games/')->json();
 
+
+
         // dd($this->formatGamesForView($gamesOriginal));
         $this->popularGames = $this->formatGamesForView($gamesOriginal);
+
+        collect($this->popularGames)->filter(function($game) {
+            return $game['rating'];
+        })->each(function($game){
+            $this->emit('gameWithRatingAdded', [
+                'slug' => $game['slug'],
+                'rating' => $game['rating'] / 100
+            ]);
+        });
     }
 
     public function render()
@@ -43,7 +54,7 @@ class PopularGames extends Component
         return collect($games)->map(function($game) {
             return collect($game)->merge([
                 'cover_big' => Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']),
-                'rating' => isset($game['rating']) ? round($game['rating']) . '%' : null,
+                'rating' => isset($game['rating']) ? round($game['rating']) : null,
                 'platforms' => collect($game['platforms'])->pluck('abbreviation')->filter()->implode(', '),
             ]);
         })->toArray();

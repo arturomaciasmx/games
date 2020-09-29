@@ -19,19 +19,28 @@ class RecentlyReviewed extends Component
 
         $gamesOriginal = Http::withHeaders(config('services.igdb'))->withOptions([
             'body' => "
-            fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating, rating_count, summary;
+            fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating, rating_count, summary, slug;
             where release_dates.platform = (48,49,6,130)
-            & (first_release_date > {$before} 
+            & (first_release_date > {$before}
             & first_release_date < {$current})
             & rating_count > 5;
             sort popularity desc;
             limit 3;
             "
         ])->get('https://api-v3.igdb.com/games/')->json();
-        
+
         // dd($this->formatGamesForView($gamesOriginal));
 
         $this->recentlyReviewed = $this->formatGamesForView($gamesOriginal);
+
+        collect($this->recentlyReviewed)->filter(function($game){
+            return $game['rating'];
+        })->each(function($game) {
+            $this->emit('recentlyReviewedGameAdded', [
+                'slug' => 'review_' . $game['slug'],
+                'rating' => $game['rating'] / 100
+            ]);
+        });
     }
 
 
@@ -45,7 +54,7 @@ class RecentlyReviewed extends Component
         return collect($games)->map(function($game){
             return collect($game)->merge([
                 'cover_url' => Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']),
-                'rating' => isset($game['rating']) ? round($game['rating']) . '%' : null,
+                'rating' => isset($game['rating']) ? round($game['rating']) : null,
                 'platforms' => collect($game['platforms'])->pluck('abbreviation')->implode(', ')
             ]);
         })->toArray();
